@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>CONTOH CRUD</title>
+  <style>
+    input[type='submit'], button, [aria-label]{
+      cursor: pointer;
+    }
+    #spoiler{
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<form action="javascript:void(0);" method="POST" onsubmit="app.Add()"> 
+  <input type="text" id="add-name" placeholder="isi">
+  <input type="submit" value="Add">
+</form>
+
+
+<p id="counter"></p>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+    <tbody id="contoh">
+    </tbody>
+</table>
+
+<script>
+var app = new function() {
+
+  this.el = document.getElementById('contoh');
+
+  this.contoh = ['INI CONTOH'];
+
+  this.Count = function(data) {
+    var el   = document.getElementById('counter');
+    var name = 'jumlah';
+
+    if (data) {
+      if (data > 1) {
+        name = 'contoh';
+      }
+      el.innerHTML = data + ' ' + name ;
+    } else {
+      el.innerHTML = 'No ' + name;
+    }
+  };
+  
+  this.FetchAll = function() {
+    var data = '';
+
+    if (this.contoh.length > 0) {
+      for (i = 0; i < this.contoh.length; i++) {
+        data += '<tr>';
+        data += '<td>' + this.contoh[i] + '</td>';
+        data += '<td><button onclick="app.Delete(' + i + ')">Delete</button></td>';
+        data += '</tr>';
+      }
+    }
+
+    this.Count(this.contoh.length);
+    return this.el.innerHTML = data;
+  };
+
+  this.Add = function () {
+    el = document.getElementById('add-name');
+    // Get the value
+    var ex = el.value;
+
+    if (ex) {
+      // Add the new value
+      this.contoh.push(ex.trim());
+      // Reset input value
+      el.value = '';
+      // Dislay the new list
+      this.FetchAll();
+    }
+  };
+
+  // 
+
+  this.Delete = function (item) {
+    // Delete the current row
+    this.contoh.splice(item, 1);
+    // Display the new list
+    this.FetchAll();
+  };
+  
+}
+
+app.FetchAll();
+
+function CloseInput() {
+  document.getElementById('spoiler').style.display = 'none';
+}
+</script>
+</body>
+</html>
